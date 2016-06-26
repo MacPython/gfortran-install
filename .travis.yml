@@ -1,0 +1,10 @@
+language: erlang
+
+matrix:
+  include:
+    - os: linux
+    - os: osx
+      language: objective-c
+
+script:
+  - source test_gf_utils.sh
