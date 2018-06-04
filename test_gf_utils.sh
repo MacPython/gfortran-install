@@ -19,7 +19,7 @@ elif [ $uname == Linux ]; then
     [ -z "$GFORTRAN_SHA" ] || (echo "GFORTRAN_SHA is set"; exit 1)
     # Check check, if gfortran installed
     gfortran --help > /dev/null && check_gfortran
-    PLAT_ROOT="manylinux1_"
+    PLAT_ROOT="manylinux1"
     I686_PLAT="i686"
     SUF=""
 fi
