@@ -11,7 +11,7 @@ function get_distutils_platform {
     # Modify fat architecture tags on macOS to reflect compiled architecture
     local plat=$1
     case $plat in
-        i686|x86_64|intel) ;;
+        i686|x86_64|intel|aarch64|s390x|ppc64le) ;;
         *) echo Did not recognize plat $plat; return 1 ;;
     esac
     local uname=${2:-$(uname)}
@@ -21,6 +21,32 @@ function get_distutils_platform {
             return 1
         fi
         echo "manylinux1_$plat"
+        return
+    fi
+    # macOS 32-bit arch is i386
+    [ "$plat" == "i686" ] && plat="i386"
+    local target=$(echo $MACOSX_DEPLOYMENT_TARGET | tr .- _)
+    echo "macosx_${target}_${plat}"
+}
+
+function get_distutils_platform_ex {
+    # Report platform as in form of distutils get_platform.
+    # This is like the platform tag that pip will use.
+    # Modify fat architecture tags on macOS to reflect compiled architecture
+    # For non-darwin, report manylinux version
+    local plat=$1
+    local MB_ML_VER=${MB_ML_VER:-1}
+    case $plat in
+        i686|x86_64|intel|aarch64|s390x|ppc64le) ;;
+        *) echo Did not recognize plat $plat; return 1 ;;
+    esac
+    local uname=${2:-$(uname)}
+    if [ "$uname" != "Darwin" ]; then
+        if [ "$plat" == "intel" ]; then
+            echo plat=intel not allowed for Manylinux
+            return 1
+        fi
+        echo "manylinux${MB_ML_VER}_${plat}"
         return
     fi
     # macOS 32-bit arch is i386
