@@ -9,6 +9,9 @@ function get_distutils_platform {
     # Report platform as in form of distutils get_platform.
     # This is like the platform tag that pip will use.
     # Modify fat architecture tags on macOS to reflect compiled architecture
+
+    # Deprecate this function once get_distutils_platform_ex is used in all
+    # downstream projects
     local plat=$1
     case $plat in
         i686|x86_64|intel|aarch64|s390x|ppc64le) ;;
@@ -35,7 +38,7 @@ function get_distutils_platform_ex {
     # Modify fat architecture tags on macOS to reflect compiled architecture
     # For non-darwin, report manylinux version
     local plat=$1
-    local MB_ML_VER=${MB_ML_VER:-1}
+    local mb_ml_ver=${MB_ML_VER:-1}
     case $plat in
         i686|x86_64|intel|aarch64|s390x|ppc64le) ;;
         *) echo Did not recognize plat $plat; return 1 ;;
@@ -46,7 +49,7 @@ function get_distutils_platform_ex {
             echo plat=intel not allowed for Manylinux
             return 1
         fi
-        echo "manylinux${MB_ML_VER}_${plat}"
+        echo "manylinux${mb_ml_ver}_${plat}"
         return
     fi
     # macOS 32-bit arch is i386
@@ -74,7 +77,7 @@ function get_gf_lib_for_suf {
     local plat=${3:-$PLAT}
     local uname=${4:-$(uname)}
     if [ -z "$prefix" ]; then echo Prefix not defined; exit 1; fi
-    local plat_tag=$(get_distutils_platform $plat $uname)
+    local plat_tag=$(get_distutils_platform_ex $plat $uname)
     if [ -n "$suffix" ]; then suffix="-$suffix"; fi
     local fname="$prefix-${plat_tag}${suffix}.tar.gz"
     local out_fname="${ARCHIVE_SDIR}/$fname"
