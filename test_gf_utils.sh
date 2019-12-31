@@ -1,5 +1,7 @@
 # Get gfortran utils
 source gfortran_utils.sh
+set -e
+
 
 uname=$(uname)
 FNAME_ROOT="openblas-v0.3.0"
@@ -55,3 +57,21 @@ rm $exp_64_tgz $exp_32_tgz
 [ "$(get_gf_lib "${FNAME_ROOT}" "i686")" == "$exp_32_tgz" ] || \
     (echo Wrong tgz output; exit 1)
 [ -f "$exp_32_tgz" ] || (echo Failed archive fetch; exit 1)
+
+# Test get_distutils_platform_ex processing of MB_ML_VER
+if [ $uname != Darwin ]; then
+    export MB_ML_VER=2010
+    ml_plat_root="manylinux2010"
+    ml_exp_64_tgz="${ARCH_ROOT}-${ml_plat_root}_x86_64${SUFP}.tar.gz"
+    val=$(get_gf_lib "${FNAME_ROOT}" "x86_64")
+    [ "${val}" == "$ml_exp_64_tgz" ] || \
+        (echo Wrong tgz output ${val}, ${ml_exp_64_tgz}; exit 1)
+fi
+
+# Test get_distutils_platform since it is no longer used internally
+[ "$(get_distutils_platform "x86_64" "x86_64")" == "manylinux1_x86_64" ] || \
+    (echo Wrong get_distutils_platform output for x86_64; exit 1)
+
+darwin_target=$(echo $MACOSX_DEPLOYMENT_TARGET | tr .- _)
+[ "$(get_distutils_platform "x86_64" "Darwin")" == "macosx_${darwin_target}_x86_64" ] || \
+    (echo Wrong get_distutils_platform output for Darwin; exit 1)
