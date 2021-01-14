@@ -97,6 +97,16 @@ if [ "$(uname)" == "Darwin" ]; then
         hdiutil attach -mountpoint /Volumes/gfortran $GFORTRAN_DMG
         sudo installer -pkg /Volumes/gfortran/gfortran.pkg -target /
         check_gfortran
+        if [[ "${PLAT:-}" == "universal2" || "${PLAT:-}" == "arm64" ]]; then
+            curl -L -O https://github.com/isuruf/isuruf.github.io/releases/download/v1.0/gfortran-darwin-arm64.tar.gz
+            sudo mkdir -p /opt/
+            sudo cp gfortran-darwin-arm64.tar.gz /opt/gfortran-darwin-arm64.tar.gz
+            pushd /opt
+              sudo tar -xvf gfortran-darwin-arm64.tar.gz
+              sudo rm gfortran-darwin-arm64.tar.gz
+            popd
+            export FC_ARM64="/opt/gfortran-darwin-arm64/bin/arm64-apple-darwin20.0.0-gfortran"
+        fi
     }
 
     function get_gf_lib {
