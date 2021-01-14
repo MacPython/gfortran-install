@@ -102,10 +102,13 @@ if [ "$(uname)" == "Darwin" ]; then
             sudo mkdir -p /opt/
             sudo cp gfortran-darwin-arm64.tar.gz /opt/gfortran-darwin-arm64.tar.gz
             pushd /opt
-              sudo tar -xvf gfortran-darwin-arm64.tar.gz
-              sudo rm gfortran-darwin-arm64.tar.gz
+                sudo tar -xvf gfortran-darwin-arm64.tar.gz
+                sudo rm gfortran-darwin-arm64.tar.gz
             popd
             export FC_ARM64="/opt/gfortran-darwin-arm64/bin/arm64-apple-darwin20.0.0-gfortran"
+            if [[ "${PLAT:-}" == "arm64" ]]; then
+                export FC=$FC_ARM64
+            fi
         fi
     }
 
