@@ -98,7 +98,7 @@ if [ "$(uname)" == "Darwin" ]; then
         sudo installer -pkg /Volumes/gfortran/gfortran.pkg -target /
         check_gfortran
         if [[ "${PLAT:-}" == "universal2" || "${PLAT:-}" == "arm64" ]]; then
-            curl -L -O https://github.com/isuruf/isuruf.github.io/releases/download/v1.0/gfortran-darwin-arm64.tar.gz
+            curl -L -O https://github.com/isuruf/gcc/releases/download/gcc-10-arm-20210112/gfortran-darwin-arm64.tar.gz
             sudo mkdir -p /opt/
             sudo cp gfortran-darwin-arm64.tar.gz /opt/gfortran-darwin-arm64.tar.gz
             pushd /opt
@@ -106,6 +106,8 @@ if [ "$(uname)" == "Darwin" ]; then
                 sudo rm gfortran-darwin-arm64.tar.gz
             popd
             export FC_ARM64="/opt/gfortran-darwin-arm64/bin/arm64-apple-darwin20.0.0-gfortran"
+            local libdir="/opt/gfortran-darwin-arm64/lib/gcc/arm64-apple-darwin20.0.0/10.2.1"
+            export FC_ARM64_LDFLAGS="-L$libdir -Wl,-rpath,$libdir"
             if [[ "${PLAT:-}" == "arm64" ]]; then
                 export FC=$FC_ARM64
             fi
