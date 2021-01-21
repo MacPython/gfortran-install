@@ -95,7 +95,7 @@ if [ "$(uname)" == "Darwin" ]; then
 
     function install_arm64_cross_gfortran {
         curl -L -O https://github.com/isuruf/gcc/releases/download/gcc-10-arm-20210112/gfortran-darwin-arm64.tar.gz
-        if [[ "$(shasum gfortran-darwin-arm64)" != "3b83b07aba20c089c980f631b75e22896e2f8a14  gfortran-darwin-arm64.tar.gz" ]]; then
+        if [[ "$(shasum gfortran-darwin-arm64.tar.gz)" != "3b83b07aba20c089c980f631b75e22896e2f8a14  gfortran-darwin-arm64.tar.gz" ]]; then
             echo "shasum mismatch for gfortran-darwin-arm64"
             exit 1
         fi
