@@ -93,24 +93,33 @@ if [ "$(uname)" == "Darwin" ]; then
     GFORTRAN_DMG="${GF_UTIL_DIR}/archives/gfortran-4.9.0-Mavericks.dmg"
     GFORTRAN_SHA="$(shasum $GFORTRAN_DMG)"
 
+    function install_arm64_cross_gfortran {
+        curl -L -O https://github.com/isuruf/gcc/releases/download/gcc-10-arm-20210112/gfortran-darwin-arm64.tar.gz
+        if [[ "$(shasum gfortran-darwin-arm64)" != "3b83b07aba20c089c980f631b75e22896e2f8a14  gfortran-darwin-arm64.tar.gz" ]]; then
+            echo "shasum mismatch for gfortran-darwin-arm64"
+            exit 1
+        fi
+        sudo mkdir -p /opt/
+        sudo cp "gfortran-darwin-arm64.tar.gz" /opt/gfortran-darwin-arm64.tar.gz
+        pushd /opt
+            sudo tar -xvf gfortran-darwin-arm64.tar.gz
+            sudo rm gfortran-darwin-arm64.tar.gz
+        popd
+        export FC_ARM64="$(find /opt/gfortran-darwin-arm64/bin -name "*-gfortran")"
+        local libgfortran="$(find /opt/gfortran-darwin-arm64/lib -name libgfortran.dylib)"
+        local libdir=$(dirname $libgfortran)
+
+        export FC_ARM64_LDFLAGS="-L$libdir -Wl,-rpath,$libdir"
+        if [[ "${PLAT:-}" == "arm64" ]]; then
+            export FC=$FC_ARM64
+        fi
+    }
     function install_gfortran {
         hdiutil attach -mountpoint /Volumes/gfortran $GFORTRAN_DMG
         sudo installer -pkg /Volumes/gfortran/gfortran.pkg -target /
         check_gfortran
         if [[ "${PLAT:-}" == "universal2" || "${PLAT:-}" == "arm64" ]]; then
-            curl -L -O https://github.com/isuruf/gcc/releases/download/gcc-10-arm-20210112/gfortran-darwin-arm64.tar.gz
-            sudo mkdir -p /opt/
-            sudo cp gfortran-darwin-arm64.tar.gz /opt/gfortran-darwin-arm64.tar.gz
-            pushd /opt
-                sudo tar -xvf gfortran-darwin-arm64.tar.gz
-                sudo rm gfortran-darwin-arm64.tar.gz
-            popd
-            export FC_ARM64="/opt/gfortran-darwin-arm64/bin/arm64-apple-darwin20.0.0-gfortran"
-            local libdir="/opt/gfortran-darwin-arm64/lib/gcc/arm64-apple-darwin20.0.0/10.2.1"
-            export FC_ARM64_LDFLAGS="-L$libdir -Wl,-rpath,$libdir"
-            if [[ "${PLAT:-}" == "arm64" ]]; then
-                export FC=$FC_ARM64
-            fi
+            install_arm64_cross_gfortran
         fi
     }
 
