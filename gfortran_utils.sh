@@ -91,11 +91,12 @@ if [ "$(uname)" == "Darwin" ]; then
     mac_target=${MACOSX_DEPLOYMENT_TARGET:-$(get_macosx_target)}
     export MACOSX_DEPLOYMENT_TARGET=$mac_target
     GFORTRAN_DMG="${GF_UTIL_DIR}/archives/gfortran-4.9.0-Mavericks.dmg"
-    GFORTRAN_SHA="$(shasum $GFORTRAN_DMG)"
+    export GFORTRAN_SHA="$(shasum $GFORTRAN_DMG)"
 
     function install_arm64_cross_gfortran {
-        curl -L -O https://github.com/isuruf/gcc/releases/download/gcc-10-arm-20210112/gfortran-darwin-arm64.tar.gz
-        if [[ "$(shasum gfortran-darwin-arm64.tar.gz)" != "3b83b07aba20c089c980f631b75e22896e2f8a14  gfortran-darwin-arm64.tar.gz" ]]; then
+        curl -L -O https://github.com/isuruf/gcc/releases/download/gcc-10-arm-20210122/gfortran-darwin-arm64.tar.gz
+        export GFORTRAN_SHA=f10e307dd252f3ddfe0ad9cabd12c60dd206a9c5
+        if [[ "$(shasum gfortran-darwin-arm64.tar.gz)" != "${GFORTRAN_SHA}  gfortran-darwin-arm64.tar.gz" ]]; then
             echo "shasum mismatch for gfortran-darwin-arm64"
             exit 1
         fi
