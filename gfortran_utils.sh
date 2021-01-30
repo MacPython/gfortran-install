@@ -82,8 +82,9 @@ function get_gf_lib_for_suf {
     local fname="$prefix-${plat_tag}${suffix}.tar.gz"
     local out_fname="${ARCHIVE_SDIR}/$fname"
     if [ ! -e "$out_fname" ]; then
-        curl -L "${GF_LIB_URL}/$fname" > $out_fname || (echo "Fetch failed"; exit 1)
+        curl -L "${GF_LIB_URL}/$fname" > $out_fname || (echo "Fetch of $out_fname failed"; exit 1)
     fi
+    [ -s $out_fname ] || (echo "$out_fname is empty"; exit 24)
     echo "$out_fname"
 }
 
