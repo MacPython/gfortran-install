@@ -95,8 +95,8 @@ if [ "$(uname)" == "Darwin" ]; then
     export GFORTRAN_SHA="$(shasum $GFORTRAN_DMG)"
 
     function install_arm64_cross_gfortran {
-        curl -L -O https://github.com/isuruf/gcc/releases/download/gcc-10-arm-20210122/gfortran-darwin-arm64.tar.gz
-        export GFORTRAN_SHA=f10e307dd252f3ddfe0ad9cabd12c60dd206a9c5
+        curl -L -O https://github.com/isuruf/gcc/releases/download/gcc-10-arm-20210228/gfortran-darwin-arm64.tar.gz
+        export GFORTRAN_SHA=f26990f6f08e19b2ec150b9da9d59bd0558261dd
         if [[ "$(shasum gfortran-darwin-arm64.tar.gz)" != "${GFORTRAN_SHA}  gfortran-darwin-arm64.tar.gz" ]]; then
             echo "shasum mismatch for gfortran-darwin-arm64"
             exit 1
