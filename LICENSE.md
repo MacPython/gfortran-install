@@ -1,6 +1,6 @@
-# gfrotran-install license
+# gfortran-install license
 
-Copyright 2016-2021 Matthew Brett, Isuru Fernando, Matti Pincus
+Copyright 2016-2021 Matthew Brett, Isuru Fernando, Matti Picus
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
