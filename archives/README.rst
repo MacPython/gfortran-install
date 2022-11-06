@@ -6,6 +6,5 @@ Binary archives
 gfortran
 ********
 
-From https://gcc.gnu.org/wiki/GFortranBinaries
+gfortran-8.2 from https://github.com/fxcoudert/gfortran-for-macOS/releases/download/8.2/gfortran-8.2-Mojave.dmg
 
-* gfortran-4.9.0-Mavericks.dmg from http://coudert.name/software/gfortran-4.9.0-Mavericks.dmg.
