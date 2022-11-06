@@ -1,6 +1,5 @@
 # Bash utilities for use with gfortran
 
-GF_LIB_URL="https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com"
 ARCHIVE_SDIR="${ARCHIVE_SDIR:-archives}"
 
 GF_UTIL_DIR=$(dirname "${BASH_SOURCE[0]}")
@@ -81,9 +80,6 @@ function get_gf_lib_for_suf {
     if [ -n "$suffix" ]; then suffix="-$suffix"; fi
     local fname="$prefix-${plat_tag}${suffix}.tar.gz"
     local out_fname="${ARCHIVE_SDIR}/$fname"
-    if [ ! -e "$out_fname" ]; then
-        curl -L "${GF_LIB_URL}/$fname" > $out_fname || (echo "Fetch of $out_fname failed"; exit 1)
-    fi
     [ -s $out_fname ] || (echo "$out_fname is empty"; exit 24)
     echo "$out_fname"
 }
@@ -91,7 +87,7 @@ function get_gf_lib_for_suf {
 if [ "$(uname)" == "Darwin" ]; then
     mac_target=${MACOSX_DEPLOYMENT_TARGET:-$(get_macosx_target)}
     export MACOSX_DEPLOYMENT_TARGET=$mac_target
-    GFORTRAN_DMG="${GF_UTIL_DIR}/archives/gfortran-4.9.0-Mavericks.dmg"
+    GFORTRAN_DMG="${GF_UTIL_DIR}/archives/gfortran-8.2-Mojave.dmg"
     export GFORTRAN_SHA="$(shasum $GFORTRAN_DMG)"
 
     function install_arm64_cross_gfortran {
