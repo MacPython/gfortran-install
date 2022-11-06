@@ -59,7 +59,7 @@ function get_distutils_platform_ex {
 
 function get_macosx_target {
     # Report MACOSX_DEPLOYMENT_TARGET as given by distutils get_platform.
-    python -c "import sysconfig as s; print(s.get_config_vars()['MACOSX_DEPLOYMENT_TARGET'])"
+    python3 -c "import sysconfig as s; print(s.get_config_vars()['MACOSX_DEPLOYMENT_TARGET'])"
 }
 
 function check_gfortran {
@@ -88,6 +88,7 @@ if [ "$(uname)" == "Darwin" ]; then
     mac_target=${MACOSX_DEPLOYMENT_TARGET:-$(get_macosx_target)}
     export MACOSX_DEPLOYMENT_TARGET=$mac_target
     GFORTRAN_DMG="${GF_UTIL_DIR}/archives/gfortran-8.2-Mojave.dmg"
+    GFORTRAN_PATH="gfortran-8.2-Mojave/gfortran.pkg"
     export GFORTRAN_SHA="$(shasum $GFORTRAN_DMG)"
 
     function install_arm64_cross_gfortran {
@@ -114,7 +115,7 @@ if [ "$(uname)" == "Darwin" ]; then
     }
     function install_gfortran {
         hdiutil attach -mountpoint /Volumes/gfortran $GFORTRAN_DMG
-        sudo installer -pkg /Volumes/gfortran/gfortran.pkg -target /
+        sudo installer -pkg /Volumes/gfortran/$GFORTRAN_PATH -target /
         check_gfortran
         if [[ "${PLAT:-}" == "universal2" || "${PLAT:-}" == "arm64" ]]; then
             install_arm64_cross_gfortran
