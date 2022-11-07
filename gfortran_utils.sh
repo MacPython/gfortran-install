@@ -87,9 +87,9 @@ function get_gf_lib_for_suf {
 if [ "$(uname)" == "Darwin" ]; then
     mac_target=${MACOSX_DEPLOYMENT_TARGET:-$(get_macosx_target)}
     export MACOSX_DEPLOYMENT_TARGET=$mac_target
-    GFORTRAN_DMG="${GF_UTIL_DIR}/archives/gfortran-8.2-Mojave.dmg"
-    GFORTRAN_PATH="gfortran-8.2-Mojave/gfortran.pkg"
-    export GFORTRAN_SHA="$(shasum $GFORTRAN_DMG)"
+    # Keep this for now as some builds might depend on this being
+    # available before install_gfortran is called
+    export GFORTRAN_SHA=13102b81ece217a30733fae0d7388c5085ff8d34
 
     function download_and_unpack_gfortran {
 	local arch=$1
