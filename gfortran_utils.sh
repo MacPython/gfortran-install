@@ -90,6 +90,8 @@ if [ "$(uname)" == "Darwin" ]; then
     # Keep this for now as some builds might depend on this being
     # available before install_gfortran is called
     export GFORTRAN_SHA=13102b81ece217a30733fae0d7388c5085ff8d34
+    # Set SDKROOT env variable if not set
+    export SDKROOT=${SDKROOT:-$(xcrun --show-sdk-path)}
 
     function download_and_unpack_gfortran {
 	local arch=$1
