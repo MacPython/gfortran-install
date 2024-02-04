@@ -99,7 +99,7 @@ if [ "$(uname)" == "Darwin" ]; then
         curl -L -O https://github.com/isuruf/gcc/releases/download/gcc-11.3.0-2/gfortran-darwin-${arch}-${type}.tar.gz
 	case ${arch}-${type} in
 	    arm64-native)
-	        export GFORTRAN_SHA=142290685240f4f86cdf359cb2030d586105d7e4
+	        export GFORTRAN_SHA=0d5c118e5966d0fb9e7ddb49321f63cac1397ce8
 		;;
 	    arm64-cross)
 		export GFORTRAN_SHA=527232845abc5af21f21ceacc46fb19c190fe804
